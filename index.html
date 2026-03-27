@@ -36,10 +36,18 @@
             user-select: none;
         }
         #brand {
-            position: fixed; top: 28px;
-            font-size: clamp(9px, 2.5vw, 11px);
-            color: #333; letter-spacing: 3px;
-            text-transform: uppercase; z-index: 10;
+            position: fixed; 
+            top: 28px;
+            font-size: clamp(10px, 2.8vw, 12px); /* 가독성을 위해 소폭 확대 */
+            font-weight: 700; /* 진하게 변경 */
+            color: #ffffff; /* 흰색으로 변경 */
+            letter-spacing: 4px; /* 자간 확장 */
+            text-transform: uppercase; 
+            z-index: 10;
+            /* 화이트 글로우 효과 */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                         0 0 20px rgba(255, 255, 255, 0.4);
+            opacity: 0.9;
         }
         #phase-badge {
             position: fixed; top: 55px;
@@ -223,12 +231,12 @@
 
 <script>
     const ALL_MISSIONS = [
-        { level: 1, text: "서로 10초간\n눈 마주치기", type: "워밍업" },
+        { level: 1, text: "서로 하이파이브 하기", type: "워밍업" },
         { level: 1, text: "가벼운 볼 키스하기", type: "워밍업" },
         { level: 2, text: "서로 뽀뽀 하기", type: "워밍업" },
         { level: 2, text: "어깨동무 하고 있기", type: "워밍업" },
         { level: 2, text: "허벅지에 손 올려놓기", type: "워밍업" },
-        { level: 2, text: "깍지손으로 잡기", type: "워밍업" },
+        { level: 2, text: "깎지손으로 잡고있기", type: "워밍업" },
         { level: 1, text: "악수하며 반갑습니다\n외치기", type: "워밍업" },
         { level: 2, text: "허리에 손 두르기", type: "워밍업" },
         { level: 2, text: "남자의 가슴에 손 얹기", type: "워밍업" },
@@ -254,12 +262,10 @@
         { level: 3, text: "1번의 게임이 끝날때까지\n상대 무릎위에 마주보고 앉아있기", type: "본게임" },
         { level: 3, text: "성기 입구 주변 여린 살들을\n혀로 부드럽게 핥아 올리기", type: "피날레" },
         { level: 5, text: "클리토리스 애무", type: "피날레" },
-        { level: 5, text: "남자의 기둥 핏줄을 따라\n아래에서 위로 길게 핥아주기", type: "피날레" },
         { level: 5, text: "여자성기 입구에 손가락 하나를 넣고\n입으로는 허벅지 애무", type: "피날레" },
         { level: 5, text: "남자의 귀두를 입안 가득 넣고\n혀로 굴리며 자극하기", type: "피날레" },
         { level: 5, text: "남자성기 입구를 혀로 깊게 찌르듯\n자극하며 신음 유도하기", type: "피날레" },
         { level: 5, text: "클리토리스를 손으로 살살 애무하기", type: "피날레" },
-        { level: 5, text: "남자의 성기 뿌리 부분부터 끝까지\n입술로 천천히 훑어내리기", type: "피날레" },
         { level: 5, text: "여자 성기 입구 주위를 애무하기", type: "피날레" },
         { level: 5, text: "클리토리스를 혀끝으로 튕기며\n동시에 손가락 두 개를 삽입하기", type: "피날레" },
         { level: 3, text: "양손으로 엉덩이 살을 가득 움켜쥐고\n자기 쪽으로 강하게 밀착하기", type: "본게임" },
@@ -335,20 +341,19 @@
         if (lv === 3) type = 'purple';
         if (lv === 4) type = 'pink';
         if (lv === 5) type = 'high';
-        if (m.type === "히든") type = 'gold'; // 히든 미션일 때 골드 타입 적용
+        if (m.type === "히든") type = 'gold'; 
         
         const colors = { 
             low:    ["0,123,255", "rgba(0,123,255,1)"],
             purple: ["138,43,226", "rgba(138,43,226,1)"],
             pink:   ["255,20,147", "rgba(255,20,147,1)"],
             high:   ["255,0,0", "rgba(255,0,0,1)"],
-            gold:   ["255,215,0", "rgba(255,215,0,1)"] // 골드 색상값 추가
+            gold:   ["255,215,0", "rgba(255,215,0,1)"] 
         };
 
         root.style.setProperty('--current-rgb', colors[type][0]);
         root.style.setProperty('--current-color', colors[type][1]);
         
-        // 골드 카드일 때 특별 글로우 적용
         if (type === 'gold') {
             root.style.setProperty('--current-glow', `var(--gold-glow)`);
         } else {
@@ -368,7 +373,7 @@
             let currentMission = queue[idx];
             
             if (currentMission.type === "히든") {
-                textElement.style.color = "#ffd700"; // 미션 텍스트도 골드색으로 변경
+                textElement.style.color = "#ffd700"; 
                 textElement.style.fontSize = "calc(var(--font-mission) * 0.85)";
                 textElement.innerText = "[SPECIAL MISSION]\n" + currentMission.text;
             } else {
@@ -402,7 +407,6 @@
 
                     if (nextMission.level === 5) {
                         lv5Counter++;
-                        // 10번째 Lv.5 타이밍에 스페셜(골드)로 교체
                         if (lv5Counter % 10 === 0) {
                             nextMission = {...HIDDEN_MISSIONS[Math.floor(Math.random()*HIDDEN_MISSIONS.length)]};
                         }
