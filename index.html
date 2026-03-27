@@ -257,11 +257,7 @@
 
     const HIDDEN_MISSIONS = [
         { level: 6, text: "여자는 남자 허벅지위에 올라타\n삽입하기", type: "히든" },
-        { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" },
-        { level: 6, text: "두 사람은\n욕실 다녀오기", type: "히든" },
-        { level: 6, text: "두 사람은\n침대 다녀오기", type: "히든" },
-        { level: 6, text: "남자 입싸 해주기\n이후에 침대에서 못세우면\n벌금 10만원", type: "히든" },
-        { level: 6, text: "침대에서 69 자세로 애무하기", type: "히든" }
+        { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" }
     ];
 
     const WARMUP = ALL_MISSIONS.filter(m => m.type === "워밍업");
@@ -393,7 +389,7 @@
         e.stopPropagation();
         if (timerRunning) { stopTimer(); showTimer(); }
         else {
-            const opts = [60, 90, 120, 150, 180];
+            const opts = [60, 90, 120];
             timerRemaining = opts[Math.floor(Math.random()*opts.length)];
             document.getElementById('timer-display').className = 'running';
             startTimer();
