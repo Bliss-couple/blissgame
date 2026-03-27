@@ -10,9 +10,12 @@
             --blue-glow: 0 0 60px rgba(0,123,255,0.6), 0 0 120px rgba(0,123,255,0.2);
             --pink-glow: 0 0 60px rgba(255,20,147,0.6), 0 0 120px rgba(255,20,147,0.2);
             --red-glow:  0 0 60px rgba(255,0,0,0.7),   0 0 140px rgba(255,0,0,0.3);
+            /* 스페셜 전용 골드 글로우 추가 */
+            --gold-glow: 0 0 60px rgba(255,215,0,0.5), 0 0 120px rgba(255,215,0,0.2);
+            
             --card-w: min(75vw, 300px);
             --card-h: calc(var(--card-w) * 1.533);
-            --font-mission: clamp(16px, 4.5vw, 22px);
+            --font-mission: clamp(15px, 4.2vw, 20px);
             --font-icon: clamp(48px, 14vw, 72px);
             --current-color: rgba(0,123,255,1);
             --current-glow: var(--blue-glow);
@@ -123,9 +126,28 @@
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
         }
         .back { transition: box-shadow 0.6s, background 0.6s; }
-        .back.lv-low  { background: linear-gradient(145deg, #001528, #003580, #0055cc); }
-        .back.lv-mid  { background: linear-gradient(145deg, #1a0020, #6b0050, #cc0070); }
-        .back.lv-high { background: linear-gradient(145deg, #1a0000, #7a0000, #cc0000); }
+        
+        /* --- 레벨별 배경색 --- */
+        .back.lv-low    { background: linear-gradient(145deg, #001528, #003580, #0055cc); }
+        .back.lv-purple { background: linear-gradient(145deg, #1a0033, #4b0082, #8a2be2); }
+        .back.lv-pink   { background: linear-gradient(145deg, #2a0010, #8b0040, #ff1493); }
+        .back.lv-high   { background: linear-gradient(145deg, #1a0000, #7a0000, #cc0000); }
+        
+        /* --- [추가] 스페셜 골드 카드 배경 --- */
+        .back.lv-gold {
+            background: linear-gradient(145deg, #000000 0%, #1a1a1a 45%, #b8860b 85%, #ffd700 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .back.lv-gold .card-icon {
+            color: #ffd700;
+            opacity: 0.7;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+        .back.lv-gold .card-level-text {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
         .card-icon { font-size: var(--font-icon); opacity: 0.25; }
         .card-level-text {
             position: absolute; bottom: 24px;
@@ -139,7 +161,9 @@
         }
         #mission-text {
             font-size: var(--font-mission); font-weight: 700;
-            line-height: 1.75; color: #ffffff; word-break: keep-all;
+            line-height: 1.5;
+            color: #ffffff; word-break: keep-all;
+            padding: 0 10px;
         }
         #progress-wrap {
             display: flex; gap: 6px; flex-wrap: wrap;
@@ -276,7 +300,7 @@
     let queue=[], idx=0, total=10, flipped=false, gameOver=false, isMain=false;
     let timerInterval = null, timerRemaining = 0, timerRunning = false;
     let mainMissionPool = []; 
-    let lv5Counter = 0; // Lv.5 카드 전용 카운터
+    let lv5Counter = 0;
 
     function initGame() {
         isMain=false; gameOver=false; flipped=false; idx=0; lv5Counter = 0;
@@ -306,20 +330,33 @@
         const back = document.getElementById('card-back');
         const root = document.documentElement;
         const lv = m.level;
+        
         let type = 'low';
-        if(lv === 3) type = 'mid';
-        if(lv >= 4) type = 'high';
+        if (lv === 3) type = 'purple';
+        if (lv === 4) type = 'pink';
+        if (lv === 5) type = 'high';
+        if (m.type === "히든") type = 'gold'; // 히든 미션일 때 골드 타입 적용
         
         const colors = { 
-            low: ["0,123,255", "rgba(0,123,255,1)"], 
-            mid: ["255,20,147", "rgba(255,20,147,1)"], 
-            high: ["255,0,0", "rgba(255,0,0,1)"] 
+            low:    ["0,123,255", "rgba(0,123,255,1)"],
+            purple: ["138,43,226", "rgba(138,43,226,1)"],
+            pink:   ["255,20,147", "rgba(255,20,147,1)"],
+            high:   ["255,0,0", "rgba(255,0,0,1)"],
+            gold:   ["255,215,0", "rgba(255,215,0,1)"] // 골드 색상값 추가
         };
+
         root.style.setProperty('--current-rgb', colors[type][0]);
         root.style.setProperty('--current-color', colors[type][1]);
-        root.style.setProperty('--current-glow', `0 0 15px ${colors[type][1]}`);
+        
+        // 골드 카드일 때 특별 글로우 적용
+        if (type === 'gold') {
+            root.style.setProperty('--current-glow', `var(--gold-glow)`);
+        } else {
+            root.style.setProperty('--current-glow', `0 0 15px ${colors[type][1]}`);
+        }
+        
         back.className = 'card-face back lv-' + type;
-        back.querySelector('.card-level-text').innerText = (m.type === "히든" ? "Lv.MAX" : 'Lv.' + lv);
+        back.querySelector('.card-level-text').innerText = (m.type === "히든" ? "SPECIAL" : 'Lv.' + lv);
     }
 
     function handleCardInteraction() {
@@ -331,10 +368,12 @@
             let currentMission = queue[idx];
             
             if (currentMission.type === "히든") {
-                textElement.style.color = "#ff3b3b";
-                textElement.innerText = "🔥 [SPECIAL MISSION] 🔥\n\n" + currentMission.text;
+                textElement.style.color = "#ffd700"; // 미션 텍스트도 골드색으로 변경
+                textElement.style.fontSize = "calc(var(--font-mission) * 0.85)";
+                textElement.innerText = "[SPECIAL MISSION]\n" + currentMission.text;
             } else {
                 textElement.style.color = "#ffffff";
+                textElement.style.fontSize = "var(--font-mission)";
                 textElement.innerText = currentMission.text;
             }
 
@@ -346,7 +385,6 @@
             setTimeout(() => {
                 idx++;
                 
-                // 워밍업 종료 체크
                 if (!isMain && idx >= 10) {
                     isMain = true;
                     idx = 0;
@@ -360,13 +398,11 @@
                         mainMissionPool = [...MAIN_POOL].sort(() => Math.random() - 0.5);
                     }
                     
-                    // 다음 카드 결정
                     let nextMission = mainMissionPool.pop();
 
-                    // Lv.5 카드가 뽑혔을 때만 카운팅
                     if (nextMission.level === 5) {
                         lv5Counter++;
-                        // 10번째 Lv.5 타이밍에 스페셜로 교체
+                        // 10번째 Lv.5 타이밍에 스페셜(골드)로 교체
                         if (lv5Counter % 10 === 0) {
                             nextMission = {...HIDDEN_MISSIONS[Math.floor(Math.random()*HIDDEN_MISSIONS.length)]};
                         }
