@@ -32,7 +32,6 @@
             touch-action: manipulation;
             user-select: none;
         }
-
         #brand {
             position: fixed; top: 28px;
             font-size: clamp(9px, 2.5vw, 11px);
@@ -46,7 +45,6 @@
             text-transform: uppercase; z-index: 10; transition: color 0.6s;
         }
         #phase-badge.main { color: #ff1493; }
-
         #game-stack {
             display: flex;
             flex-direction: column;
@@ -54,8 +52,6 @@
             gap: 20px;
             margin-top: 20px;
         }
-
-        /* 타이머 영역 (카드 위) */
         #timer-wrap {
             display: flex;
             flex-direction: row;
@@ -67,7 +63,6 @@
             height: 60px;
         }
         #timer-wrap.visible { opacity: 1; pointer-events: auto; }
-
         #timer-btn {
             width: 48px; height: 48px;
             border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
@@ -86,7 +81,6 @@
             70%  { box-shadow: 0 0 0 10px rgba(var(--current-rgb), 0); }
             100% { box-shadow: 0 0 0 0 rgba(var(--current-rgb), 0); }
         }
-
         #timer-display {
             font-weight: 700;
             letter-spacing: 1px;
@@ -96,7 +90,7 @@
         }
         #timer-display.idle {
             font-size: 14px;
-            color: rgba(255,255,255,0.6); /* 기본 흰색 계열 */
+            color: rgba(255,255,255,0.6);
             text-shadow: none;
         }
         #timer-display.running {
@@ -109,8 +103,6 @@
             color: #ff4444;
             text-shadow: 0 0 15px rgba(255,60,60,0.8);
         }
-
-        /* 카드 */
         .card-container {
             width: var(--card-w); height: var(--card-h);
             perspective: 2000px; cursor: pointer;
@@ -149,12 +141,10 @@
             font-size: var(--font-mission); font-weight: 700;
             line-height: 1.75; color: #ffffff; word-break: keep-all;
         }
-
-        /* 진행 점 (카드 아래) */
         #progress-wrap {
             display: flex; gap: 6px; flex-wrap: wrap;
             justify-content: center; max-width: 90vw; margin-top: 10px;
-            height: 10px; /* 높이 고정하여 사라질 때 레이아웃 유지 */
+            height: 10px;
         }
         .prog-dot {
             width: 5px; height: 5px; border-radius: 50%;
@@ -162,12 +152,10 @@
         }
         .prog-dot.done { background: #555; }
         .prog-dot.active { background: #aaa; transform: scale(1.4); }
-
         #guide-text {
             position: fixed; bottom: 30px;
             font-size: 12px; color: #444;
         }
-
         #end-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
             align-items: center; justify-content: center; flex-direction: column;
@@ -224,13 +212,60 @@
         { level: 4, text: "엉덩이 잡고있기", type: "본게임" },
         { level: 5, text: "옷속으로 손 넣기", type: "본게임" },
         { level: 4, text: "옷 위로 성기 만지기", type: "본게임" },
-        { level: 4, text: "옷 위로 가슴 만지기", type: "본게임" }
+        { level: 4, text: "옷 위로 가슴 만지기", type: "본게임" },
+        { level: 3, text: "파트너의 윗입술과 아랫입술을\n번갈아 깨물며 진하게 키스하기", type: "본게임" },
+        { level: 4, text: "혀를 깊숙이 넣어 서로의 입천장을\n훑으며 멈추지 말고 키스하기", type: "본게임" },
+        { level: 3, text: "상대방의 입안에서\n부드럽게 혀 섞기", type: "본게임" },
+        { level: 3, text: "키스 도중 상대방의 아랫입술을\n가볍게 잡아당겼다 놓으며 자극하기", type: "본게임" },
+        { level: 4, text: "서로의 혀끝만 맞대고 간지럽히듯\n자극하다가 갑자기 깊게 키스하기", type: "본게임" },
+        { level: 3, text: "상대방의 입술 주변을 혀로\n한 바퀴 핥은 뒤 진하게 입 맞추기", type: "본게임" },
+        { level: 3, text: "키스하면서 손으로는 상대방의\n머리카락을 부드럽게 움켜쥐기", type: "본게임" },
+        { level: 4, text: "목소리가 새어 나오지 못하게\n입술을 강하게 압박하며 키스하기", type: "본게임" },
+        { level: 4, text: "눈을 감고 오직 혀의 감각에만\n집중하며 아주 천천히 딥키스하기", type: "본게임" },
+        { level: 4, text: "상대방의 입술을 머금고 키스하기", type: "본게임" },
+        { level: 3, text: "슬립 위로 가슴 만지기", type: "본게임" },
+        { level: 3, text: "가슴 애무하기", type: "본게임" },
+        { level: 3, text: "한쪽 유두는 입으로 애무,\n다른 쪽 유두는 손가락으로 비틀기", type: "피날레" },
+        { level: 3, text: "5번의 게임 끝날때까지\n손으로 한쪽가슴 애무", type: "본게임" },
+        { level: 3, text: "1번의 게임이 끝날때까지\n상대 무릎위에 마주보고 앉아있기", type: "본게임" },
+        { level: 3, text: "성기 입구 주변 여린 살들을\n혀로 부드럽게 핥아 올리기", type: "피날레" },
+        { level: 5, text: "클리토리스 애무", type: "피날레" },
+        { level: 5, text: "남자의 기둥 핏줄을 따라\n아래에서 위로 길게 핥아주기", type: "피날레" },
+        { level: 5, text: "여자성기 입구에 손가락 하나를 넣고\n입으로는 허벅지 애무", type: "피날레" },
+        { level: 5, text: "남자의 귀두를 입안 가득 넣고\n혀로 굴리며 자극하기", type: "피날레" },
+        { level: 5, text: "남자성기 입구를 혀로 깊게 찌르듯\n자극하며 신음 유도하기", type: "피날레" },
+        { level: 5, text: "클리토리스를 손으로 살살 애무하기", type: "피날레" },
+        { level: 5, text: "남자의 성기 뿌리 부분부터 끝까지\n입술로 천천히 훑어내리기", type: "피날레" },
+        { level: 5, text: "여자 성기 입구 주위를 애무하기", type: "피날레" },
+        { level: 5, text: "클리토리스를 혀끝으로 튕기며\n동시에 손가락 두 개를 삽입하기", type: "피날레" },
+        { level: 3, text: "양손으로 엉덩이 살을 가득 움켜쥐고\n자기 쪽으로 강하게 밀착하기", type: "본게임" },
+        { level: 3, text: "맨살 엉덩이 밑부분을 살짝 깨물고\n손바닥으로 마사지하기", type: "본게임" },
+        { level: 3, text: "엉덩이를 양옆으로 벌리고\n입술로 성기 입구 근처까지 자극하기", type: "피날레" },
+        { level: 3, text: "여자가 남자의 허벅지 위에 마주 보고\n앉아 서로의 심장 소리 느끼기", type: "본게임" },
+        { level: 3, text: "뒤에서 상대를 꽉 껴안고\n목덜미와 귓볼을 혀로 간지럽히기", type: "본게임" },
+        { level: 3, text: "여자가 남자의 무릎 위에 앉아\n 남자 자극시키기", type: "피날레" },
+        { level: 3, text: "서로를 마주 안은 상태에서\n 심장소리 느끼기", type: "본게임" },
+        { level: 3, text: "남자의 다리 사이에 여자가 앉아 등을 맞대고\n목을 뒤로 젖혀 키스하기", type: "피날레" },
+        { level: 3, text: "여자가 남자의 허벅지 위에서\n가슴으로 안아주기", type: "피날레" },
+        { level: 3, text: "상대를 무릎 위에 앉히고 가슴을\n뒤에서 감싸 안으며 유두 만지기", type: "피날레" },
+        { level: 3, text: "상대방의 배꼽 주위를 혀로\n간지럽히며 점점 아래로 내려가기", type: "본게임" },
+        { level: 3, text: "쇄골 라인을 따라 혀로 훑고\n가슴 으로 내려가서 애무하기", type: "본게임" },
+        { level: 3, text: "상대방의 귀에 뜨거운 숨을\n불어넣으며 혀로 귓바퀴 핥기", type: "본게임" },
+        { level: 3, text: "목덜미의 가장 예민한 부분을 찾아\n입으로 애무하기", type: "본게임" },
+        { level: 3, text: "상대방의 손가락을 하나씩 입에 넣고\n혀로 감싸며 빨아주기", type: "본게임" }
+    ];
 
-        
+    const HIDDEN_MISSIONS = [
+        { level: 6, text: "여자는 남자 허벅지위에 올라타\n삽입하기", type: "히든" },
+        { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" },
+        { level: 6, text: "두 사람은\n욕실 다녀오기", type: "히든" },
+        { level: 6, text: "두 사람은\n침대 다녀오기", type: "히든" },
+        { level: 6, text: "남자 입싸 해주기\n이후에 침대에서 못세우면\n벌금 10만원", type: "히든" },
+        { level: 6, text: "침대에서 69 자세로 애무하기", type: "히든" }
     ];
 
     const WARMUP = ALL_MISSIONS.filter(m => m.type === "워밍업");
-    const MAIN   = ALL_MISSIONS.filter(m => m.type === "본게임");
+    const MAIN_POOL = ALL_MISSIONS.filter(m => m.type === "본게임" || m.type === "피날레");
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq, duration, vol) {
@@ -244,11 +279,13 @@
 
     let queue=[], idx=0, total=10, flipped=false, gameOver=false, isMain=false;
     let timerInterval = null, timerRemaining = 0, timerRunning = false;
+    let mainMissionPool = []; 
+    let lv5Counter = 0; // Lv.5 카드 전용 카운터
 
     function initGame() {
-        isMain=false; gameOver=false; flipped=false; idx=0;
-        queue = [...WARMUP].sort(() => Math.random() - 0.5);
-        total = 10; // 워밍업 점 10개 고정
+        isMain=false; gameOver=false; flipped=false; idx=0; lv5Counter = 0;
+        queue = [...WARMUP].sort(() => Math.random() - 0.5).slice(0, 10);
+        mainMissionPool = [];
         stopTimer();
         document.getElementById('card').classList.remove('flipped');
         document.getElementById('end-overlay').classList.remove('visible');
@@ -261,9 +298,8 @@
     function buildDots() {
         const wrap = document.getElementById('progress-wrap');
         wrap.innerHTML = '';
-        if (isMain) return; // 본 게임이면 점을 만들지 않음
-        
-        for (let i = 0; i < total; i++) {
+        if (isMain) return;
+        for (let i = 0; i < 10; i++) {
             const d = document.createElement('div');
             d.className = 'prog-dot' + (i === 0 ? ' active' : '');
             wrap.appendChild(d);
@@ -274,20 +310,38 @@
         const back = document.getElementById('card-back');
         const root = document.documentElement;
         const lv = m.level;
-        const type = lv<=2 ? 'low' : lv<=3 ? 'mid' : 'high';
-        const colors = { low: ["0,123,255", "rgba(0,123,255,1)"], mid: ["255,20,147", "rgba(255,20,147,1)"], high: ["255,0,0", "rgba(255,0,0,1)"] };
+        let type = 'low';
+        if(lv === 3) type = 'mid';
+        if(lv >= 4) type = 'high';
+        
+        const colors = { 
+            low: ["0,123,255", "rgba(0,123,255,1)"], 
+            mid: ["255,20,147", "rgba(255,20,147,1)"], 
+            high: ["255,0,0", "rgba(255,0,0,1)"] 
+        };
         root.style.setProperty('--current-rgb', colors[type][0]);
         root.style.setProperty('--current-color', colors[type][1]);
         root.style.setProperty('--current-glow', `0 0 15px ${colors[type][1]}`);
         back.className = 'card-face back lv-' + type;
-        back.querySelector('.card-level-text').innerText = 'Lv.' + lv;
+        back.querySelector('.card-level-text').innerText = (m.type === "히든" ? "Lv.MAX" : 'Lv.' + lv);
     }
 
     function handleCardInteraction() {
         if (gameOver) return;
         const card = document.getElementById('card');
+        const textElement = document.getElementById('mission-text');
+        
         if (!flipped) {
-            document.getElementById('mission-text').innerText = queue[idx].text;
+            let currentMission = queue[idx];
+            
+            if (currentMission.type === "히든") {
+                textElement.style.color = "#ff3b3b";
+                textElement.innerText = "🔥 [SPECIAL MISSION] 🔥\n\n" + currentMission.text;
+            } else {
+                textElement.style.color = "#ffffff";
+                textElement.innerText = currentMission.text;
+            }
+
             flipped = true; card.classList.add('flipped');
             showTimer();
         } else {
@@ -295,22 +349,41 @@
             stopTimer(); hideTimer();
             setTimeout(() => {
                 idx++;
-                if (!isMain && idx >= queue.length) {
-                    isMain = true; queue = [...MAIN].sort(() => Math.random() - 0.5);
-                    idx = 0; 
-                    buildDots(); // 본게임 진입 시 점 제거 로직 포함됨
+                
+                // 워밍업 종료 체크
+                if (!isMain && idx >= 10) {
+                    isMain = true;
+                    idx = 0;
                     document.getElementById('phase-badge').innerText = 'MAIN GAME';
                     document.getElementById('phase-badge').className = 'main';
+                    buildDots();
                 }
-                if (idx < queue.length) {
-                    setTheme(queue[idx]);
-                    if (!isMain) {
-                        document.querySelectorAll('.prog-dot').forEach((d, i) => {
-                            d.className = 'prog-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
-                        });
+
+                if (isMain) {
+                    if (mainMissionPool.length === 0) {
+                        mainMissionPool = [...MAIN_POOL].sort(() => Math.random() - 0.5);
                     }
-                } else {
-                    gameOver = true; document.getElementById('end-overlay').classList.add('visible');
+                    
+                    // 다음 카드 결정
+                    let nextMission = mainMissionPool.pop();
+
+                    // Lv.5 카드가 뽑혔을 때만 카운팅
+                    if (nextMission.level === 5) {
+                        lv5Counter++;
+                        // 10번째 Lv.5 타이밍에 스페셜로 교체
+                        if (lv5Counter % 10 === 0) {
+                            nextMission = {...HIDDEN_MISSIONS[Math.floor(Math.random()*HIDDEN_MISSIONS.length)]};
+                        }
+                    }
+                    
+                    queue[idx] = nextMission;
+                }
+
+                setTheme(queue[idx]);
+                if (!isMain) {
+                    document.querySelectorAll('.prog-dot').forEach((d, i) => {
+                        d.className = 'prog-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
+                    });
                 }
             }, 650);
         }
