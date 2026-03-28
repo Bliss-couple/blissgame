@@ -88,16 +88,16 @@
         #timer-display.running { font-size: 28px; color: var(--current-color); text-shadow: var(--current-glow); font-variant-numeric: tabular-nums; }
         #timer-display.warning { color: #ff4444; text-shadow: 0 0 15px rgba(255,60,60,0.8); }
 
-        .card-container { width: var(--card-w); height: var(--card-h); perspective: 2000px; cursor: pointer; }
+        .card-container { width: var(--card-w); height: var(--card-h); perspective: 2000px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .card {
             width: 100%; height: 100%; position: relative;
             transform-style: preserve-3d;
-            /* 뒤집기 속도를 0.4초로 단축하여 딜레이 제거 */
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* 모바일에서도 빠른 반응을 위해 0.4s 유지 및 !important 추가 가능 */
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
             border-radius: clamp(18px, 6vw, 28px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card.flipped { transform: rotateY(180deg); }
+        .card.flipped { transform: rotateY(180deg) !important; }
         .card-face {
             position: absolute; inset: 0; border-radius: inherit;
             border: 1px solid rgba(255,255,255,0.1);
@@ -174,21 +174,28 @@
 
 <script>
     const GAME_PASSWORD = "11250716"; 
-    let isAnimating = false; // 애니메이션 중 클릭 방지 플래그
+    let isAnimating = false;
+
+    // 페이지 로드 시 즉시 실행 (모바일 로딩 지연 방지)
+    window.onload = function() {
+        checkAccess();
+    };
 
     function checkAccess() {
-        const entry = prompt("비밀번호를 입력하세요.");
-        if (entry === GAME_PASSWORD) {
-            document.getElementById('main-container').style.display = 'flex';
-            initGame(); 
-        } else {
-            alert("접근 권한이 없습니다.");
-            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:100px;'>Access Denied</h1>";
-        }
+        // 모바일 입력 딜레이 고려하여 약간의 지연 후 prompt 실행
+        setTimeout(() => {
+            const entry = prompt("비밀번호를 입력하세요.");
+            if (entry && entry.trim() === GAME_PASSWORD) {
+                document.getElementById('main-container').style.display = 'flex';
+                initGame(); 
+            } else if (entry !== null) {
+                alert("비밀번호가 일치하지 않습니다.");
+                location.reload(); // 새로고침하여 다시 입력 유도
+            }
+        }, 100);
     }
 
     const ALL_MISSIONS = [
-
 // [Lv.1] 가벼운 스킨십 및 인사 (워밍업)----------------------------------------------------------------------------
         { level: 1, text: "서로 하이파이브 하기", type: "워밍업" },
         { level: 1, text: "가벼운 볼 키스하기", type: "워밍업" },
@@ -266,14 +273,10 @@
         { level: 5, text: "클리토리스를 손으로 살살 애무하기", type: "피날레" },
     ];
 
-
-
     const HIDDEN_MISSIONS = [
         { level: 6, text: "여자는 남자 허벅지위에 올라타\n삽입하기", type: "히든" },
         { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" }
     ];
-
-
 
     const WARMUP = ALL_MISSIONS.filter(m => m.type === "워밍업");
     const MAIN_POOL = ALL_MISSIONS.filter(m => m.type === "본게임" || m.type === "피날레");
@@ -344,12 +347,14 @@
     }
 
     function handleCardInteraction() {
-        if (gameOver || isAnimating) return; // 애니메이션 중이면 클릭 무시
+        if (gameOver || isAnimating) return; 
         
         const card = document.getElementById('card');
         const textElement = document.getElementById('mission-text');
         
-        isAnimating = true; // 애니메이션 시작
+        // 브라우저 GPU 최적화
+        card.style.willChange = 'transform';
+        isAnimating = true; 
 
         if (!flipped) {
             let currentMission = queue[idx];
@@ -367,15 +372,18 @@
             card.classList.add('flipped');
             showTimer();
 
-            // 0.4초 후 애니메이션 종료
-            setTimeout(() => { isAnimating = false; }, 400);
+            // 0.4초 후 애니메이션 종료 플래그 해제
+            setTimeout(() => { 
+                isAnimating = false; 
+                card.style.willChange = 'auto';
+            }, 400);
         } else {
             flipped = false; 
             card.classList.remove('flipped');
             stopTimer(); 
             hideTimer();
 
-            // 카드가 뒷면으로 돌아간 후 다음 미션 세팅 (0.4초 뒤)
+            // [개선] 카드가 완전히 뒷면으로 돌아간 후에 데이터 교체 (버벅임 방지)
             setTimeout(() => {
                 idx++;
                 if (!isMain && idx >= 10) {
@@ -401,7 +409,8 @@
                         d.className = 'prog-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
                     });
                 }
-                isAnimating = false; // 애니메이션 종료
+                isAnimating = false; 
+                card.style.willChange = 'auto';
             }, 400);
         }
     }
@@ -441,7 +450,12 @@
         document.getElementById('timer-display').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    function stopTimer() { clearInterval(timerInterval); timerRunning = false; document.getElementById('timer-btn').className = ''; }
+    function stopTimer() { 
+        clearInterval(timerInterval); 
+        timerRunning = false; 
+        document.getElementById('timer-btn').classList.remove('running'); 
+    }
+    
     function showTimer() {
         document.getElementById('timer-wrap').classList.add('visible');
         document.getElementById('timer-display').className = 'idle';
@@ -450,7 +464,6 @@
     function hideTimer() { document.getElementById('timer-wrap').classList.remove('visible'); }
     function resetGame() { initGame(); }
 
-    checkAccess(); 
 </script>
 </body>
 </html>
