@@ -35,9 +35,8 @@
             user-select: none;
         }
 
-        /* [추가] 비밀번호 입력 전 화면 가리기용 컨테이너 */
         #main-container {
-            display: none; /* 비밀번호 인증 전에는 숨김 */
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -45,44 +44,11 @@
             height: 100%;
         }
 
-        /* 하단 문구 영역 */
-        #guide-area {
-            position: fixed;
-            bottom: 30px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 10;
-        }
-
-        /* [수정] 눈 감기 문구 - 글로우 효과를 선명하고 자연스럽게 */
-        #close-eyes-text {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffffff;
-            /* 더 또렷하고 자연스러운 흰색 네온 글로우 */
-            text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 
-                         0 0 12px rgba(255, 255, 255, 0.5);
-            opacity: 0.9;
-        }
-
-        #guide-text {
-            font-size: 12px;
-            color: #444;
-        }
-
         #brand {
-            position: fixed; 
-            top: 28px;
-            font-size: clamp(10px, 2.8vw, 12px);
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 4px;
-            text-transform: uppercase; 
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
-                         0 0 20px rgba(255, 255, 255, 0.4);
+            position: fixed; top: 28px;
+            font-size: clamp(10px, 2.8vw, 12px); font-weight: 700; color: #ffffff;
+            letter-spacing: 4px; text-transform: uppercase; z-index: 10;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
             opacity: 0.9;
         }
         #phase-badge {
@@ -92,35 +58,24 @@
             text-transform: uppercase; z-index: 10; transition: color 0.6s;
         }
         #phase-badge.main { color: #ff1493; }
+
         #game-stack {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-top: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 20px;
         }
+
         #timer-wrap {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 14px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s;
-            height: 60px;
+            display: flex; flex-direction: row; align-items: center; gap: 14px;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s; height: 60px;
         }
         #timer-wrap.visible { opacity: 1; pointer-events: auto; }
         #timer-btn {
-            width: 48px; height: 48px;
-            border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+            width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.04); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; transition: 0.25s;
+            display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.25s;
             -webkit-tap-highlight-color: transparent;
         }
         #timer-btn.running {
-            border-color: var(--current-color);
-            background: rgba(255,255,255,0.07);
+            border-color: var(--current-color); background: rgba(255,255,255,0.07);
             animation: pulse-ring 1.5s infinite;
         }
         @keyframes pulse-ring {
@@ -128,36 +83,17 @@
             70%  { box-shadow: 0 0 0 10px rgba(var(--current-rgb), 0); }
             100% { box-shadow: 0 0 0 0 rgba(var(--current-rgb), 0); }
         }
-        #timer-display {
-            font-weight: 700;
-            letter-spacing: 1px;
-            min-width: 120px;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-        #timer-display.idle {
-            font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            text-shadow: none;
-        }
-        #timer-display.running {
-            font-size: 28px;
-            color: var(--current-color);
-            text-shadow: var(--current-glow);
-            font-variant-numeric: tabular-nums;
-        }
-        #timer-display.warning {
-            color: #ff4444;
-            text-shadow: 0 0 15px rgba(255,60,60,0.8);
-        }
-        .card-container {
-            width: var(--card-w); height: var(--card-h);
-            perspective: 2000px; cursor: pointer;
-        }
+        #timer-display { font-weight: 700; letter-spacing: 1px; min-width: 120px; transition: all 0.2s ease; text-align: left; }
+        #timer-display.idle { font-size: 14px; color: rgba(255,255,255,0.6); }
+        #timer-display.running { font-size: 28px; color: var(--current-color); text-shadow: var(--current-glow); font-variant-numeric: tabular-nums; }
+        #timer-display.warning { color: #ff4444; text-shadow: 0 0 15px rgba(255,60,60,0.8); }
+
+        .card-container { width: var(--card-w); height: var(--card-h); perspective: 2000px; cursor: pointer; }
         .card {
             width: 100%; height: 100%; position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* 뒤집기 속도를 0.4초로 단축하여 딜레이 제거 */
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border-radius: clamp(18px, 6vw, 28px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -170,57 +106,31 @@
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
         }
         .back { transition: box-shadow 0.6s, background 0.6s; }
-        
-        /* --- 레벨별 배경색 --- */
         .back.lv-low    { background: linear-gradient(145deg, #001528, #003580, #0055cc); }
         .back.lv-purple { background: linear-gradient(145deg, #1a0033, #4b0082, #8a2be2); }
         .back.lv-pink   { background: linear-gradient(145deg, #2a0010, #8b0040, #ff1493); }
         .back.lv-high   { background: linear-gradient(145deg, #1a0000, #7a0000, #cc0000); }
+        .back.lv-gold   { background: linear-gradient(145deg, #000000 0%, #1a1a1a 45%, #b8860b 85%, #ffd700 100%); border: 1px solid rgba(255, 215, 0, 0.3); }
         
-        /* --- [추가] 스페셜 골드 카드 배경 --- */
-        .back.lv-gold {
-            background: linear-gradient(145deg, #000000 0%, #1a1a1a 45%, #b8860b 85%, #ffd700 100%);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        .back.lv-gold .card-icon {
-            color: #ffd700;
-            opacity: 0.7;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-        .back.lv-gold .card-level-text {
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-        }
-
         .card-icon { font-size: var(--font-icon); opacity: 0.25; }
-        .card-level-text {
-            position: absolute; bottom: 24px;
-            font-size: 10px; letter-spacing: 4px;
-            color: rgba(255,255,255,0.4); font-weight: 700;
-        }
-        .front {
-            background: #0d0d12; transform: rotateY(180deg);
-            text-align: center; gap: 12px;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-        }
-        #mission-text {
-            font-size: var(--font-mission); font-weight: 700;
-            line-height: 1.5;
-            color: #ffffff; word-break: keep-all;
-            padding: 0 10px;
-        }
-        #progress-wrap {
-            display: flex; gap: 6px; flex-wrap: wrap;
-            justify-content: center; max-width: 90vw; margin-top: 10px;
-            height: 10px;
-        }
-        .prog-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: #222; transition: 0.4s;
-        }
+        .card-level-text { position: absolute; bottom: 24px; font-size: 10px; letter-spacing: 4px; color: rgba(255,255,255,0.4); font-weight: 700; }
+        
+        .front { background: #0d0d12; transform: rotateY(180deg); text-align: center; gap: 12px; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+        #mission-text { font-size: var(--font-mission); font-weight: 700; line-height: 1.5; color: #ffffff; word-break: keep-all; padding: 0 10px; }
+
+        #progress-wrap { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 90vw; margin-top: 10px; height: 10px; }
+        .prog-dot { width: 5px; height: 5px; border-radius: 50%; background: #222; transition: 0.4s; }
         .prog-dot.done { background: #555; }
         .prog-dot.active { background: #aaa; transform: scale(1.4); }
-        
+
+        #guide-area { position: fixed; bottom: 30px; text-align: center; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+        #close-eyes-text {
+            font-size: 14px; font-weight: 700; color: #ffffff;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.4);
+            opacity: 0.9;
+        }
+        #guide-text { font-size: 12px; color: #444; }
+
         #end-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
             align-items: center; justify-content: center; flex-direction: column;
@@ -234,13 +144,11 @@
 <div id="main-container">
     <div id="brand">PRODUCED BY @BLISS_COUPLE</div>
     <div id="phase-badge">WARMING UP</div>
-
     <div id="game-stack">
         <div id="timer-wrap">
             <div id="timer-btn" onclick="handleTimer(event)">⏳</div>
             <div id="timer-display" class="idle">탭하면 시간 배정</div>
         </div>
-
         <div class="card-container" onclick="handleCardInteraction()">
             <div id="card" class="card">
                 <div id="card-back" class="card-face back lv-low">
@@ -252,15 +160,12 @@
                 </div>
             </div>
         </div>
-
         <div id="progress-wrap"></div>
     </div>
-
     <div id="guide-area">
         <p id="close-eyes-text">미션에 걸린 팀은 눈을 감아주세요</p>
         <p id="guide-text">카드를 터치하여 확인하세요</p>
     </div>
-
     <div id="end-overlay" onclick="resetGame()">
         <h2>🎉 모든 미션 완료</h2>
         <p>터치하면 처음으로 돌아갑니다</p>
@@ -268,26 +173,17 @@
 </div>
 
 <script>
-    // [추가] 비밀번호 설정 (원하는 비밀번호로 바꾸세요)
-    const GAME_PASSWORD = "11250716";
+    const GAME_PASSWORD = "7777"; 
+    let isAnimating = false; // 애니메이션 중 클릭 방지 플래그
 
-    // [추가] 접속 시 비밀번호 확인 함수
     function checkAccess() {
-        // 프롬프트 창으로 비밀번호 입력받음
-        const entry = prompt("비밀번호를 입력해야 게임을 시작할 수 있습니다.");
-        
+        const entry = prompt("비밀번호를 입력하세요.");
         if (entry === GAME_PASSWORD) {
-            // 비밀번호가 맞으면
-            alert("환영합니다, Kang PD님!");
-            // 게임 화면 컨테이너 표시
             document.getElementById('main-container').style.display = 'flex';
-            // 게임 초기화 및 시작
             initGame(); 
         } else {
-            // 비밀번호가 틀리면
-            alert("비밀번호가 틀렸습니다. 접근 권한이 없습니다.");
-            // 화면에 차단 메시지 표시
-            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:100px;'>접근이 차단되었습니다.<br>페이지를 새로고침하여 다시 시도하세요.</h1>";
+            alert("접근 권한이 없습니다.");
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:100px;'>Access Denied</h1>";
         }
     }
 
@@ -299,6 +195,8 @@
         { level: 1, text: "악수하며 반갑습니다\n외치기", type: "워밍업" },
 
 
+
+
 // [Lv.2] 밀착 및 다정한 신체 접촉 (워밍업)-------------------------------------------------------------------------
 
         { level: 2, text: "서로 뽀뽀 하기", type: "워밍업" },
@@ -308,6 +206,8 @@
         { level: 2, text: "허리에 손 두르기", type: "워밍업" },
         { level: 2, text: "남자의 가슴에 손 얹기", type: "워밍업" },
         { level: 2, text: "어깨에 기대기", type: "워밍업" },
+
+
 
 
 // [Lv.3] 적극적인 애무 및 키스 (본게임)------------------------------------------------------------------------------
@@ -337,6 +237,8 @@
         { level: 3, text: "3게임 진행동안 옷 위로 가슴 만지기", type: "본게임" },
 
 
+
+
 // [Lv.4] 자극적인 딥키스 및 신체 접촉 (본게임)-----------------------------------------------------------------------
 
         { level: 4, text: "여자가 남자위에 올라가\n자극하다가 갑자기 깊게 키스하기", type: "본게임" },
@@ -351,6 +253,8 @@
         { level: 4, text: "키스 도중 상대방의 아랫입술을\n가볍게 잡아당겼다 놓으며 자극하기", type: "본게임" },
 
 
+
+
 // [Lv.5] 직접적인 성적 자극 (피날레)-------------------------------------------------------------------------------------
 
         { level: 5, text: "남자의 귀두를 입안 가득 넣고\n혀로 굴리며 자극하기", type: "피날레" },
@@ -360,15 +264,16 @@
         { level: 5, text: "클리토리스 애무", type: "피날레" },
         { level: 5, text: "여자성기 입구에 손가락 하나를 넣고\n입으로는 허벅지 애무", type: "피날레" },
         { level: 5, text: "클리토리스를 손으로 살살 애무하기", type: "피날레" },
-
-
     ];
 
+
+
     const HIDDEN_MISSIONS = [
-// [Lv.6] 직접적인 삽입 -------------------------------------------------------------------------------------
         { level: 6, text: "여자는 남자 허벅지위에 올라타\n삽입하기", type: "히든" },
         { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" }
     ];
+
+
 
     const WARMUP = ALL_MISSIONS.filter(m => m.type === "워밍업");
     const MAIN_POOL = ALL_MISSIONS.filter(m => m.type === "본게임" || m.type === "피날레");
@@ -383,13 +288,13 @@
         osc.start(); osc.stop(audioCtx.currentTime + duration);
     }
 
-    let queue=[], idx=0, total=10, flipped=false, gameOver=false, isMain=false;
+    let queue=[], idx=0, flipped=false, gameOver=false, isMain=false;
     let timerInterval = null, timerRemaining = 0, timerRunning = false;
     let mainMissionPool = []; 
     let lv5Counter = 0;
 
     function initGame() {
-        isMain=false; gameOver=false; flipped=false; idx=0; lv5Counter = 0;
+        isMain=false; gameOver=false; flipped=false; idx=0; lv5Counter = 0; isAnimating = false;
         queue = [...WARMUP].sort(() => Math.random() - 0.5).slice(0, 10);
         mainMissionPool = [];
         stopTimer();
@@ -416,7 +321,6 @@
         const back = document.getElementById('card-back');
         const root = document.documentElement;
         const lv = m.level;
-        
         let type = 'low';
         if (lv === 3) type = 'purple';
         if (lv === 4) type = 'pink';
@@ -433,25 +337,22 @@
 
         root.style.setProperty('--current-rgb', colors[type][0]);
         root.style.setProperty('--current-color', colors[type][1]);
-        
-        if (type === 'gold') {
-            root.style.setProperty('--current-glow', `var(--gold-glow)`);
-        } else {
-            root.style.setProperty('--current-glow', `0 0 15px ${colors[type][1]}`);
-        }
+        root.style.setProperty('--current-glow', type === 'gold' ? `var(--gold-glow)` : `0 0 15px ${colors[type][1]}`);
         
         back.className = 'card-face back lv-' + type;
         back.querySelector('.card-level-text').innerText = (m.type === "히든" ? "SPECIAL" : 'Lv.' + lv);
     }
 
     function handleCardInteraction() {
-        if (gameOver) return;
+        if (gameOver || isAnimating) return; // 애니메이션 중이면 클릭 무시
+        
         const card = document.getElementById('card');
         const textElement = document.getElementById('mission-text');
         
+        isAnimating = true; // 애니메이션 시작
+
         if (!flipped) {
             let currentMission = queue[idx];
-            
             if (currentMission.type === "히든") {
                 textElement.style.color = "#ffd700"; 
                 textElement.style.fontSize = "calc(var(--font-mission) * 0.85)";
@@ -462,36 +363,35 @@
                 textElement.innerText = currentMission.text;
             }
 
-            flipped = true; card.classList.add('flipped');
+            flipped = true; 
+            card.classList.add('flipped');
             showTimer();
+
+            // 0.4초 후 애니메이션 종료
+            setTimeout(() => { isAnimating = false; }, 400);
         } else {
-            flipped = false; card.classList.remove('flipped');
-            stopTimer(); hideTimer();
+            flipped = false; 
+            card.classList.remove('flipped');
+            stopTimer(); 
+            hideTimer();
+
+            // 카드가 뒷면으로 돌아간 후 다음 미션 세팅 (0.4초 뒤)
             setTimeout(() => {
                 idx++;
-                
                 if (!isMain && idx >= 10) {
-                    isMain = true;
-                    idx = 0;
+                    isMain = true; idx = 0;
                     document.getElementById('phase-badge').innerText = 'MAIN GAME';
                     document.getElementById('phase-badge').className = 'main';
                     buildDots();
                 }
 
                 if (isMain) {
-                    if (mainMissionPool.length === 0) {
-                        mainMissionPool = [...MAIN_POOL].sort(() => Math.random() - 0.5);
-                    }
-                    
+                    if (mainMissionPool.length === 0) mainMissionPool = [...MAIN_POOL].sort(() => Math.random() - 0.5);
                     let nextMission = mainMissionPool.pop();
-
                     if (nextMission.level === 5) {
                         lv5Counter++;
-                        if (lv5Counter % 10 === 0) {
-                            nextMission = {...HIDDEN_MISSIONS[Math.floor(Math.random()*HIDDEN_MISSIONS.length)]};
-                        }
+                        if (lv5Counter % 10 === 0) nextMission = {...HIDDEN_MISSIONS[Math.floor(Math.random()*HIDDEN_MISSIONS.length)]};
                     }
-                    
                     queue[idx] = nextMission;
                 }
 
@@ -501,7 +401,8 @@
                         d.className = 'prog-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
                     });
                 }
-            }, 650);
+                isAnimating = false; // 애니메이션 종료
+            }, 400);
         }
     }
 
@@ -529,7 +430,6 @@
             }
             if (timerRemaining <= 0) {
                 stopTimer();
-                document.getElementById('timer-btn').className = 'done';
                 document.getElementById('timer-display').innerText = '종료!';
                 playBeep(880, 0.5, 0.2);
             }
@@ -541,7 +441,7 @@
         document.getElementById('timer-display').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    function stopTimer() { clearInterval(timerInterval); timerRunning = false; }
+    function stopTimer() { clearInterval(timerInterval); timerRunning = false; document.getElementById('timer-btn').className = ''; }
     function showTimer() {
         document.getElementById('timer-wrap').classList.add('visible');
         document.getElementById('timer-display').className = 'idle';
@@ -550,7 +450,6 @@
     function hideTimer() { document.getElementById('timer-wrap').classList.remove('visible'); }
     function resetGame() { initGame(); }
 
-    // [수정된 부분] 초기화 대신 비밀번호 확인 함수 호출
     checkAccess(); 
 </script>
 </body>
