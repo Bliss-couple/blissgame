@@ -10,7 +10,6 @@
             --blue-glow: 0 0 60px rgba(0,123,255,0.6), 0 0 120px rgba(0,123,255,0.2);
             --pink-glow: 0 0 60px rgba(255,20,147,0.6), 0 0 120px rgba(255,20,147,0.2);
             --red-glow:  0 0 60px rgba(255,0,0,0.7),   0 0 140px rgba(255,0,0,0.3);
-            /* 스페셜 전용 골드 글로우 추가 */
             --gold-glow: 0 0 60px rgba(255,215,0,0.5), 0 0 120px rgba(255,215,0,0.2);
             
             --card-w: min(75vw, 300px);
@@ -36,33 +35,52 @@
             user-select: none;
         }
 
-#guide-area {
+        /* [추가] 비밀번호 입력 전 화면 가리기용 컨테이너 */
+        #main-container {
+            display: none; /* 비밀번호 인증 전에는 숨김 */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 하단 문구 영역 */
+        #guide-area {
             position: fixed;
             bottom: 30px;
             text-align: center;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            z-index: 10;
         }
+
+        /* [수정] 눈 감기 문구 - 글로우 효과를 선명하고 자연스럽게 */
         #close-eyes-text {
             font-size: 14px;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
-                         0 0 20px rgba(255, 255, 255, 0.4);
+            /* 더 또렷하고 자연스러운 흰색 네온 글로우 */
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 
+                         0 0 12px rgba(255, 255, 255, 0.5);
             opacity: 0.9;
+        }
+
+        #guide-text {
+            font-size: 12px;
+            color: #444;
         }
 
         #brand {
             position: fixed; 
             top: 28px;
-            font-size: clamp(10px, 2.8vw, 12px); /* 가독성을 위해 소폭 확대 */
-            font-weight: 700; /* 진하게 변경 */
-            color: #ffffff; /* 흰색으로 변경 */
-            letter-spacing: 4px; /* 자간 확장 */
+            font-size: clamp(10px, 2.8vw, 12px);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 4px;
             text-transform: uppercase; 
             z-index: 10;
-            /* 화이트 글로우 효과 */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
                          0 0 20px rgba(255, 255, 255, 0.4);
             opacity: 0.9;
@@ -202,10 +220,7 @@
         }
         .prog-dot.done { background: #555; }
         .prog-dot.active { background: #aaa; transform: scale(1.4); }
-        #guide-text {
-            position: fixed; bottom: 30px;
-            font-size: 12px; color: #444;
-        }
+        
         #end-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
             align-items: center; justify-content: center; flex-direction: column;
@@ -216,41 +231,66 @@
 </head>
 <body>
 
-<div id="brand">PRODUCED BY @BLISS_COUPLE</div>
-<div id="phase-badge">WARMING UP</div>
+<div id="main-container">
+    <div id="brand">PRODUCED BY @BLISS_COUPLE</div>
+    <div id="phase-badge">WARMING UP</div>
 
-<div id="game-stack">
-    <div id="timer-wrap">
-        <div id="timer-btn" onclick="handleTimer(event)">⏳</div>
-        <div id="timer-display" class="idle">탭하면 시간 배정</div>
-    </div>
+    <div id="game-stack">
+        <div id="timer-wrap">
+            <div id="timer-btn" onclick="handleTimer(event)">⏳</div>
+            <div id="timer-display" class="idle">탭하면 시간 배정</div>
+        </div>
 
-    <div class="card-container" onclick="handleCardInteraction()">
-        <div id="card" class="card">
-            <div id="card-back" class="card-face back lv-low">
-                <span class="card-icon">♠</span>
-                <span class="card-level-text">Lv.1</span>
-            </div>
-            <div class="card-face front">
-                <p id="mission-text"></p>
+        <div class="card-container" onclick="handleCardInteraction()">
+            <div id="card" class="card">
+                <div id="card-back" class="card-face back lv-low">
+                    <span class="card-icon">♠</span>
+                    <span class="card-level-text">Lv.1</span>
+                </div>
+                <div class="card-face front">
+                    <p id="mission-text"></p>
+                </div>
             </div>
         </div>
+
+        <div id="progress-wrap"></div>
     </div>
 
-    <div id="progress-wrap"></div>
-</div>
+    <div id="guide-area">
+        <p id="close-eyes-text">미션에 걸린 팀은 눈을 감아주세요</p>
+        <p id="guide-text">카드를 터치하여 확인하세요</p>
+    </div>
 
-<div id="guide-area">
-    <p id="close-eyes-text">미션에 걸린 팀은 눈을 감아주세요</p>
-    <p id="guide-text">카드를 터치하여 확인하세요</p>
-</div>
-
-<div id="end-overlay" onclick="resetGame()">
-    <h2>🎉 모든 미션 완료</h2>
-    <p>터치하면 처음으로 돌아갑니다</p>
+    <div id="end-overlay" onclick="resetGame()">
+        <h2>🎉 모든 미션 완료</h2>
+        <p>터치하면 처음으로 돌아갑니다</p>
+    </div>
 </div>
 
 <script>
+    // [추가] 비밀번호 설정 (원하는 비밀번호로 바꾸세요)
+    const GAME_PASSWORD = "11250716";
+
+    // [추가] 접속 시 비밀번호 확인 함수
+    function checkAccess() {
+        // 프롬프트 창으로 비밀번호 입력받음
+        const entry = prompt("비밀번호를 입력해야 게임을 시작할 수 있습니다.");
+        
+        if (entry === GAME_PASSWORD) {
+            // 비밀번호가 맞으면
+            alert("환영합니다, Kang PD님!");
+            // 게임 화면 컨테이너 표시
+            document.getElementById('main-container').style.display = 'flex';
+            // 게임 초기화 및 시작
+            initGame(); 
+        } else {
+            // 비밀번호가 틀리면
+            alert("비밀번호가 틀렸습니다. 접근 권한이 없습니다.");
+            // 화면에 차단 메시지 표시
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:100px;'>접근이 차단되었습니다.<br>페이지를 새로고침하여 다시 시도하세요.</h1>";
+        }
+    }
+
     const ALL_MISSIONS = [
 
 // [Lv.1] 가벼운 스킨십 및 인사 (워밍업)----------------------------------------------------------------------------
@@ -272,7 +312,6 @@
 
 // [Lv.3] 적극적인 애무 및 키스 (본게임)------------------------------------------------------------------------------
     
-
         { level: 3, text: "상대방의 입안에서\n부드럽게 혀 섞기", type: "본게임" },
         { level: 3, text: "상대방의 입술 주변을 혀로\n한 바퀴 핥은 뒤 진하게 입 맞추기", type: "본게임" },
         { level: 3, text: "키스하면서 손으로는 상대방의\n머리카락을 부드럽게 움켜쥐기", type: "본게임" },
@@ -314,8 +353,6 @@
 
 // [Lv.5] 직접적인 성적 자극 (피날레)-------------------------------------------------------------------------------------
 
-
-
         { level: 5, text: "남자의 귀두를 입안 가득 넣고\n혀로 굴리며 자극하기", type: "피날레" },
         { level: 5, text: "남자성기 입구를 혀로 깊게 찌르듯\n자극하며 신음 유도하기", type: "피날레" },
         { level: 5, text: "여자 성기 입구 주위를 애무하기", type: "피날레" },
@@ -332,9 +369,6 @@
         { level: 6, text: "여자는 남자 허벅지위에 올라타\n삽입하기", type: "히든" },
         { level: 6, text: "남자는 여자 뒤에서\n삽입하기", type: "히든" }
     ];
-
-
-
 
     const WARMUP = ALL_MISSIONS.filter(m => m.type === "워밍업");
     const MAIN_POOL = ALL_MISSIONS.filter(m => m.type === "본게임" || m.type === "피날레");
@@ -516,7 +550,8 @@
     function hideTimer() { document.getElementById('timer-wrap').classList.remove('visible'); }
     function resetGame() { initGame(); }
 
-    initGame();
+    // [수정된 부분] 초기화 대신 비밀번호 확인 함수 호출
+    checkAccess(); 
 </script>
 </body>
 </html>
